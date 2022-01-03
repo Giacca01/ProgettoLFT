@@ -44,7 +44,7 @@ public class NomiMatricole {
                 case Q1:
                     if (dispari.contains(symbol))
                         stato = States.Q4;
-                    else if (Character.isLetter(symbol)) {
+                    else if (Character.isLetter(symbol) && symbol >= 'a' && symbol <= 'z') {
                         stato = States.Q1;
                     } else if (pari.contains(symbol))
                         stato = States.Q3;
@@ -55,7 +55,7 @@ public class NomiMatricole {
                 case Q2:
                     if (pari.contains(symbol))
                         stato = States.Q4;
-                    else if (Character.isLetter(symbol)) {
+                    else if (Character.isLetter(symbol) && symbol >= 'a' && symbol <= 'z') {
                         stato = States.Q2;
                     } else if (dispari.contains(symbol)) {
                         stato = States.Q3;
@@ -98,6 +98,8 @@ public class NomiMatricole {
         System.out.println("Input: Rossi654321 ==> " + scan("Rossi654321"));
         System.out.println("Input: Bianchi2 ==> " + scan("Bianchi2"));
         System.out.println("Input: B122 ==> " + scan("B122"));
+        System.out.println("Input: Giacardi944310 ==> " + scan("Giacardi944310"));
+        System.out.println("Input: Fontana7128458 ==> " + scan("Fontana7128458"));
 
         // Rejected string
         System.out.println("\n***Stringhe da rifiutare***");
@@ -106,5 +108,7 @@ public class NomiMatricole {
         System.out.println("Input: 654322 ==> " + scan("654322"));
         System.out.println("Input: Rossi ==> " + scan("Rossi"));
         System.out.println("Input: rOssi654321 ==> " + scan("rOssi654321"));
+        System.out.println("Input: Giacardi944311 ==> " + scan("Giacardi944311"));
+        System.out.println("Input: Urru944310 ==> " + scan("Urru944310"));
     }
 }
