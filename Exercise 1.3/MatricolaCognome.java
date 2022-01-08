@@ -13,47 +13,52 @@ public class MatricolaCognome {
             symbol = s.charAt(i);
 
             switch (stato) {
-            case Q0:
-                if (Character.isDigit(symbol) && Character.getNumericValue(symbol) % 2 == 0)
-                    stato = States.Q1;
-                else if (Character.isDigit(symbol) && Character.getNumericValue(symbol) % 2 != 0)
-                    stato = States.Q2;
-                else
-                    stato = States.INVALID;
-                break;
+                case Q0:
+                    if (Character.isDigit(symbol) && Character.getNumericValue(symbol) % 2 == 0)
+                        stato = States.Q1;
+                    else if (Character.isDigit(symbol) && Character.getNumericValue(symbol) % 2 != 0)
+                        stato = States.Q2;
+                    else
+                        stato = States.INVALID;
+                    break;
 
-            case Q1:
-                if (Character.isDigit(symbol) && Character.getNumericValue(symbol) % 2 == 0)
-                    stato = States.Q1;
-                else if (Character.isDigit(symbol) && Character.getNumericValue(symbol) % 2 != 0)
-                    stato = States.Q2;
-                else if (Character.isLetter(symbol) && (symbol >= 'A' && symbol <= 'K'))
-                    stato = States.Q3;
-                else
-                    stato = States.INVALID;
-                break;
+                case Q1:
+                    /*
+                        Java uses te short circuit evaluation, so we are sure that  
+                        Character.getNumericValue(symbol) % 2 == 0 will be evaluated if and only if
+                        symbol is a digit
+                    */
+                    if (Character.isDigit(symbol) && Character.getNumericValue(symbol) % 2 == 0)
+                        stato = States.Q1;
+                    else if (Character.isDigit(symbol) && Character.getNumericValue(symbol) % 2 != 0)
+                        stato = States.Q2;
+                    else if (Character.isLetter(symbol) && (symbol >= 'A' && symbol <= 'K'))
+                        stato = States.Q3;
+                    else
+                        stato = States.INVALID;
+                    break;
 
-            case Q2:
-                if (Character.isDigit(symbol) && Character.getNumericValue(symbol) % 2 == 0)
-                    stato = States.Q1;
-                else if (Character.isDigit(symbol) && Character.getNumericValue(symbol) % 2 != 0)
-                    stato = States.Q2;
-                else if (Character.isLetter(symbol) && (symbol >= 'L' && symbol <= 'Z'))
-                    stato = States.Q3;
-                else
-                    stato = States.INVALID;
-                break;
+                case Q2:
+                    if (Character.isDigit(symbol) && Character.getNumericValue(symbol) % 2 == 0)
+                        stato = States.Q1;
+                    else if (Character.isDigit(symbol) && Character.getNumericValue(symbol) % 2 != 0)
+                        stato = States.Q2;
+                    else if (Character.isLetter(symbol) && (symbol >= 'L' && symbol <= 'Z'))
+                        stato = States.Q3;
+                    else
+                        stato = States.INVALID;
+                    break;
 
-            case Q3:
-                if (Character.isLetter(symbol) && (symbol >= 'a' && symbol <= 'z'))
-                    stato = States.Q3;
-                else
-                    stato = States.INVALID;
-                break;
+                case Q3:
+                    if (Character.isLetter(symbol) && (symbol >= 'a' && symbol <= 'z'))
+                        stato = States.Q3;
+                    else
+                        stato = States.INVALID;
+                    break;
 
-            default:
-                stato = States.INVALID;
-                break;
+                default:
+                    stato = States.INVALID;
+                    break;
             }
             i++;
         }
@@ -68,6 +73,8 @@ public class MatricolaCognome {
         System.out.println("Input: 122B ==> " + scan("122B"));
         System.out.println("Input: 123456Bianchi ==> " + scan("123456Bianchi"));
         System.out.println("Input: 654321Rossi ==> " + scan("654321Rossi"));
+        System.out.println("Input: 944310Giacardi ==> " + scan("944310Giacardi"));
+        System.out.println("Input: 177698Fontana ==> " + scan("177698Fontana"));
 
         // Rejected string
         System.out.println("\n***Stringhe da rifiutare***");
@@ -75,5 +82,13 @@ public class MatricolaCognome {
         System.out.println("Input: 123456Rossi ==> " + scan("123456Rossi"));
         System.out.println("Input: 654322 ==> " + scan("654322"));
         System.out.println("Input: Rossi ==> " + scan("Rossi"));
+        /*
+            Urru is from corso B, so he cannot have an even ID
+        */
+        System.out.println("Input: 944310Urru ==> " + scan("944310Urru"));
+        /*
+         * Urru is from corso C, so he cannot have an odd ID
+         */
+        System.out.println("Input: 177697Fontana ==> " + scan("177697Fontana"));
     }
 }

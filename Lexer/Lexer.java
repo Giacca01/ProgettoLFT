@@ -80,25 +80,6 @@ public class Lexer {
             peek = ' ';
             returnValue = Token.plus;
             break;
-        /**
-         * Tutto ciò che segue non serve: non è compito del lexer verificare che il
-         * token sia usato correttamente. Il lexer deve limitarsi a riconoscere il
-         * token. Quindi non deve preoccuparsi di controllare se, ad esempio, il simbolo
-         * di divisione sia seguito da una costante numerica
-         */
-        /*
-         * try {
-         * 
-         * 
-         * br.mark(1000); readch(br); // non importa sapere il simbolo successivo //
-         * possa davvero essere tokenizzato come numero // basta che sia una cifra
-         * numerica // non è compito del lexer fare l'analisi sintattica if
-         * (Character.isDigit(peek) || peek == ' ') { peek = ' '; br.reset(); return
-         * Token.plus; } else { System.err.println("Erroneous character" + " after + : "
-         * + peek); return null; } } catch (IOException e) {
-         * System.out.println("The internal error: " + e.getMessage() +
-         * " occurred. Terminating."); return null; }
-         */
 
         case '-':
             peek = ' ';
@@ -125,12 +106,14 @@ public class Lexer {
                 // in peek e verrà trattato dalla seguente
                 // invocazione di lexical_scan
                 // quini niente lettura al ciclo successivo
+                // (in pratica, date le condizioni di arresto del ciclo, abbiamo già letto il
+                // carattere successivo al commento)
                 return lexical_scan(br);
 
             } else if (peek == '*') {
 
                 // multiline comment
-                // non serve l'1.9 perchè il riconoscimento
+                // non serve l'1.10 perchè il riconoscimento
                 // dei token prima e dopo /**/ è fatto da altre
                 // parti del lexer
                 symbol = ' ';
@@ -199,7 +182,6 @@ public class Lexer {
 
             break;
 
-        // si suppone che <, > si possano usare solo per numeri
         case '<':
             readch(br);
 

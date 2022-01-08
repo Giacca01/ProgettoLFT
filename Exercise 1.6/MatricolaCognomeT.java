@@ -13,64 +13,64 @@ public class MatricolaCognomeT {
             symbol = s.charAt(i);
 
             switch (stato) {
-            case Q0:
-                if (Character.isDigit(symbol) && Character.getNumericValue(symbol) % 2 == 0)
-                    stato = States.Q1;
-                else if (Character.isDigit(symbol) && Character.getNumericValue(symbol) % 2 != 0)
-                    stato = States.Q2;
-                else
+                case Q0:
+                    if (Character.isDigit(symbol) && Character.getNumericValue(symbol) % 2 == 0)
+                        stato = States.Q1;
+                    else if (Character.isDigit(symbol) && Character.getNumericValue(symbol) % 2 != 0)
+                        stato = States.Q2;
+                    else
+                        stato = States.INVALID;
+                    break;
+
+                case Q1:
+                    if (Character.isDigit(symbol))
+                        stato = States.Q3;
+                    else
+                        stato = States.INVALID;
+                    break;
+
+                case Q2:
+                    if (Character.isDigit(symbol))
+                        stato = States.Q4;
+                    else
+                        stato = States.INVALID;
+                    break;
+
+                case Q3:
+                    if (Character.isLetter(symbol) && (symbol >= 'A' && symbol <= 'K'))
+                        stato = States.Q5;
+                    else if (Character.isDigit(symbol))
+                        stato = States.Q3;
+                    else
+                        stato = States.INVALID;
+                    break;
+
+                case Q4:
+                    if (Character.isLetter(symbol) && (symbol >= 'L' && symbol <= 'Z'))
+                        stato = States.Q5;
+                    else if (Character.isDigit(symbol))
+                        stato = States.Q4;
+                    else
+                        stato = States.INVALID;
+                    break;
+
+                case Q5:
+                    if (Character.isLetter(symbol) && (Character.isLowerCase(symbol)))
+                        stato = States.Q5;
+                    else if (symbol == ' ')
+                        stato = States.Q6;
+                    else
+                        stato = States.INVALID;
+                    break;
+
+                case Q6:
+                    if (Character.isLetter(symbol) && (Character.isUpperCase(symbol)))
+                        stato = States.Q5;
+                    break;
+
+                default:
                     stato = States.INVALID;
-                break;
-
-            case Q1:
-                if (Character.isDigit(symbol))
-                    stato = States.Q3;
-                else
-                    stato = States.INVALID;
-                break;
-
-            case Q2:
-                if (Character.isDigit(symbol))
-                    stato = States.Q4;
-                else
-                    stato = States.INVALID;
-                break;
-
-            case Q3:
-                if (Character.isLetter(symbol) && (symbol >= 'A' && symbol <= 'K'))
-                    stato = States.Q5;
-                else if (Character.isDigit(symbol))
-                    stato = States.Q3;
-                else
-                    stato = States.INVALID;
-                break;
-
-            case Q4:
-                if (Character.isLetter(symbol) && (symbol >= 'L' && symbol <= 'Z'))
-                    stato = States.Q5;
-                else if (Character.isDigit(symbol))
-                    stato = States.Q4;
-                else
-                    stato = States.INVALID;
-                break;
-
-            case Q5:
-                if (Character.isLetter(symbol) && (Character.isLowerCase(symbol)))
-                    stato = States.Q5;
-                else if (symbol == ' ')
-                    stato = States.Q6;
-                else
-                    stato = States.INVALID;
-                break;
-
-            case Q6:
-                if (Character.isLetter(symbol) && (Character.isUpperCase(symbol)))
-                    stato = States.Q5;
-                break;
-
-            default:
-                stato = States.INVALID;
-                break;
+                    break;
             }
             i++;
         }
@@ -84,6 +84,8 @@ public class MatricolaCognomeT {
         System.out.println("Input: 654321Bianchi ==> " + scan("654321Bianchi"));
         System.out.println("Input: 123456Rossi ==> " + scan("123456Rossi"));
         System.out.println("Input: 221B ==> " + scan("221B"));
+        System.out.println("Input: 944320Giacardi ==> " + scan("944320Giacardi"));
+        System.out.println("Input: 944320Fontana ==> " + scan("944320Fontana"));
 
         // Rejected string
         System.out.println("\n***Stringhe da rifiutare***");
@@ -93,5 +95,6 @@ public class MatricolaCognomeT {
         System.out.println("Input: 654322 ==> " + scan("654322"));
         System.out.println("Input: Rossi ==> " + scan("Rossi"));
         System.out.println("Input: 2Bianchi ==> " + scan("2Bianchi"));
+        System.out.println("Input: 244311Giacardi ==> " + scan("944311Giacardi"));
     }
 }

@@ -11,7 +11,7 @@ public class Identificatori {
 
         // scans the input string
         while (i < input.length() && state != States.INVALID){
-            symbol = input.charAt(i); // restrives current symbol
+            symbol = input.charAt(i); // retrives current symbol
             switch (state) {
                 // handles the symbol according to current state and automaton definition
                 case Q0:
