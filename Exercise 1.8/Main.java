@@ -144,12 +144,14 @@ public class Main {
         System.out.println("Input: 1e-2 ==> " + scan("1e-2"));
         System.out.println("Input: -.7e2 ==> " + scan("-.7e2"));
         System.out.println("Input: 1e2.3 ==> " + scan("1e2.3"));
+        System.out.println("Input: -1.5e+2.3 ==> " + scan("1e2.3"));
 
         // Rejected strings
         System.out.println("\n***Stringhe da rifiutare***");
         System.out.println("Input: . ==> " + scan("."));
         System.out.println("Input: e3 ==> " + scan("e3"));
         System.out.println("Input: 123. ==> " + scan("123."));
+        System.out.println("Input: 123e ==> " + scan("123."));
         System.out.println("Input: +e6 ==> " + scan("+e6"));
         System.out.println("Input: 1.2.3 ==> " + scan("1.2.3"));
         System.out.println("Input: 4e5e6 ==> " + scan("4e5e6"));

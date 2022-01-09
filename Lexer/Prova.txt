@@ -6,7 +6,7 @@ assign 5 to _2 /* Prova assegnamento */
 (100 / 0), (223 - 4);
 assign 300 to d;/* *****Test con tanti asterischi *** */
 /**/
-print(4 < 5);
+print(4 <= 5);
 
 /*
 	123_abc
@@ -30,4 +30,3 @@ end;
 !4==5
 4==5||6==7
 // fine
-/*
