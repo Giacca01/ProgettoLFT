@@ -1,0 +1,42 @@
+if (> x y) {
+	print(x); 
+	print(x,t,d,d)
+} else {
+	print(x)
+} end;
+
+while (> x 0) {
+	assign - x 1 to x;
+	print(x)
+};
+
+// simulazione di un ciclo che stampa i primi n numeri, da 0 a n-1
+assign 0 to i;
+read(n);
+while(< i n) {
+	print(i);
+	assign +(i,1) to i
+};
+
+if (> x 3) print(x) end;
+while(< x 3) print(l);
+
+if(< x 2) {
+	print(x)
+} else {
+	read(x)
+} end;
+
+if(> 2 3)
+	print(y)
+end;
+
+if(< x r)
+
+print (x)
+
+else
+
+while(< 0 x){assign - x 1 to x}
+
+end

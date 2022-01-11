@@ -1,0 +1,13 @@
+assign 0 to first;
+assign 1 to second;
+assign 0 to i;
+read(n);
+print(second);
+while(< i n) {
+	assign +(first,second) to second;
+	// fib(i) = fib(i-1) + fib(i-2)
+	// second = first + second
+	assign - second first to first;
+	assign +(i,1) to i;
+	print(second)
+}

@@ -1,32 +1,66 @@
-5*/2;
-assign 5 to _2 /* Prova assegnamento */
-(300+500);
-{200 * 400};
-(100 / 0), (223 - 4);
-assign 300 to d;/* *****Test con tanti asterischi *** */
-/**/
-print(4 < 5);
+/* Successfull Tests - Uncomment to test */
+//(300+500)
 
+//200 * 400
+
+//(100 / 0) * (223 - 4)
+
+//(100*2+(2)-4)/(3*4-(4*(3-4))+200)
+
+/*(1+
+2*(2-3
+))
+/2
+-(2-(2-10))/3+2-4*7
+*4
++5
 /*
-	123_abc
-	____
-	_
+Questo commento multilinea
+non verrà
+letto dal parser.
 */
-begin;
-	assign _Prova to a_1_b; // prova
-	assign _empty123 to b_123;
-	if (a == Prova){
-		assign ok to a_1_b; // ciao
-	}else{
-		assign no to b123;
-	}
-	
-	while (b <> no)
-		if (4 == 4 && 5 > 4)
-			assign true to __a_1____bcgd_____;
-end;
-	
-!4==5
-4==5||6==7
-// fine
-/*
+/*+ (
+	4
+	*
+	4
+	+
+	(5)
+)
+// Questo è un bel commento
+/
+3*/
+
+/* Tests that generate error - Uncomment to test */
+//5*/2
+
+//200(5+4)
+
+//()
+
+//+5
+
+//-5
+
+//*5
+
+///5
+
+//5+
+
+//1++555(
+
+//2//45/
+
+//1**88
+
+//1--122
+
+//1(
+
+//)
+
+//1+22((
+
+//1+()
+
+///*
