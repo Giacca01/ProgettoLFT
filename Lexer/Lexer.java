@@ -14,6 +14,22 @@ public class Lexer {
     private static HashMap<String, Integer> keyWords = new HashMap<>();
 
     /**
+     * Constructor of the Lexer class, initializes the keyWords HashMap
+     */
+    public Lexer() {
+        // Initializing the keyword's map
+        keyWords.put("assign", Tag.ASSIGN);
+        keyWords.put("to", Tag.TO);
+        keyWords.put("if", Tag.IF);
+        keyWords.put("else", Tag.ELSE);
+        keyWords.put("while", Tag.WHILE);
+        keyWords.put("begin", Tag.BEGIN);
+        keyWords.put("end", Tag.END);
+        keyWords.put("print", Tag.PRINT);
+        keyWords.put("read", Tag.READ);
+    }
+
+    /**
      * Function that reads and returns a character from the given stream
      * 
      * @param br: stream to read characters from
@@ -333,7 +349,7 @@ public class Lexer {
 
     public static void main(String[] args) {
         Lexer lex = new Lexer();
-        String path = "Prova.txt"; // il percorso del file da leggere
+        String path = "EsempiPDF.txt"; // il percorso del file da leggere
 
         // Open an input stream and prints the lexer's output
         try {
