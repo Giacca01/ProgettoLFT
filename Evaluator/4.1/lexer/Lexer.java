@@ -1,3 +1,4 @@
+package lexer;
 import java.io.*;
 import java.util.*;
 
@@ -12,22 +13,6 @@ public class Lexer {
     // HashMap that allows to retrive key words' token
     // in constant time ( O(1) )
     private static HashMap<String, Integer> keyWords = new HashMap<>();
-
-    /**
-     * Constructor of the Lexer class, initializes the keyWords HashMap
-     */
-    public Lexer() {
-        // Initializing the keyword's map
-        keyWords.put("assign", Tag.ASSIGN);
-        keyWords.put("to", Tag.TO);
-        keyWords.put("if", Tag.IF);
-        keyWords.put("else", Tag.ELSE);
-        keyWords.put("while", Tag.WHILE);
-        keyWords.put("begin", Tag.BEGIN);
-        keyWords.put("end", Tag.END);
-        keyWords.put("print", Tag.PRINT);
-        keyWords.put("read", Tag.READ);
-    }
 
     /**
      * Function that reads and returns a character from the given stream
