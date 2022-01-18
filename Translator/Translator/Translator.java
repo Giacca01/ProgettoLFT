@@ -599,7 +599,7 @@ public class Translator {
                         break;
 
                     case ">=":
-                        code.emit(OpCode.if_icmpgt, bexprTrue);
+                        code.emit(OpCode.if_icmpge, bexprTrue);
                         break;
                         
                     default:
