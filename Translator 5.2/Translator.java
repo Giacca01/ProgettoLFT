@@ -585,7 +585,7 @@ public class Translator {
                 bexprTrue2 = bexprTrue;
                 bexprFalse2 = bexprFalse;
                 bexpr(bexprTrue1, bexprFalse1);
-                code.emit(OpCode.GOto, bexprTrue1);
+                code.emitLabel(bexprTrue1);
                 bexpr(bexprTrue2, bexprFalse2);
                 break;
 
@@ -597,7 +597,7 @@ public class Translator {
                 bexprTrue2 = bexprTrue;
                 bexprFalse2 = bexprFalse;
                 bexpr(bexprTrue1, bexprFalse1);
-                code.emit(OpCode.GOto, bexprFalse1);
+                code.emitLabel(bexprFalse1);
                 bexpr(bexprTrue2, bexprFalse2);
                 break;
 
