@@ -2,7 +2,7 @@ import java.util.HashSet;
 
 public class NomiMatricole {
     enum States {
-        Q0, Q1, Q2, Q3, Q4, INVALID
+        Q0, Q1, Q2, Q3, Q4, Q5, Q6, INVALID
     }
 
     static boolean scan(String s) {
@@ -41,7 +41,7 @@ public class NomiMatricole {
                         stato = States.INVALID;
                     break;
 
-                case Q1:
+                case Q1: // Cognome corso A
                     if (dispari.contains(symbol))
                         stato = States.Q4;
                     else if (Character.isLetter(symbol) && symbol >= 'a' && symbol <= 'z') {
@@ -52,18 +52,18 @@ public class NomiMatricole {
                         stato = States.INVALID;
                     break;
 
-                case Q2:
+                case Q2: // COgnome corso b
                     if (pari.contains(symbol))
-                        stato = States.Q4;
+                        stato = States.Q5;
                     else if (Character.isLetter(symbol) && symbol >= 'a' && symbol <= 'z') {
                         stato = States.Q2;
                     } else if (dispari.contains(symbol)) {
-                        stato = States.Q3;
+                        stato = States.Q6;
                     } else
                         stato = States.INVALID;
                     break;
 
-                case Q3:
+                case Q3: // Pari-corso A
                     if (pari.contains(symbol))
                         stato = States.Q3;
                     else if (dispari.contains(symbol))
@@ -72,11 +72,29 @@ public class NomiMatricole {
                         stato = States.INVALID;
                     break;
 
-                case Q4:
-                    if (dispari.contains(symbol))
-                        stato = States.Q4;
-                    else if (pari.contains(symbol))
+                case Q4:// Dispari-corso A
+                    if (pari.contains(symbol))
                         stato = States.Q3;
+                    else if (dispari.contains(symbol))
+                        stato = States.Q4;
+                    else
+                        stato = States.INVALID;
+                    break;
+
+                case Q5:
+                    if (pari.contains(symbol))
+                        stato = States.Q5;
+                    else if (dispari.contains(symbol))
+                        stato = States.Q6;
+                    else
+                        stato = States.INVALID;
+                    break;
+                
+                case Q6:// Dispari-corso B
+                    if (pari.contains(symbol))
+                        stato = States.Q5;
+                    else if (dispari.contains(symbol))
+                        stato = States.Q6;
                     else
                         stato = States.INVALID;
                     break;
@@ -88,7 +106,7 @@ public class NomiMatricole {
             i++;
         }
 
-        return stato == States.Q3 || stato == States.Q4;
+        return stato == States.Q3 || stato == States.Q6;
     }
 
     public static void main(String[] args) {
