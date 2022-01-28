@@ -575,40 +575,7 @@ public class Translator {
          * while and if construct.
          */
         Token aus = null;
-        int bexprTrue1, bexprFalse1, bexprTrue2, bexprFalse2;
         switch (look.tag) {
-            // produzione bexpr ::= && bexpr bexpr
-            case Tag.AND:
-                match(Tag.AND);
-                bexprTrue1 = code.newLabel();
-                bexprFalse1 = bexprFalse;
-                bexprTrue2 = bexprTrue;
-                bexprFalse2 = bexprFalse;
-                bexpr(bexprTrue1, bexprFalse1);
-                code.emit(OpCode.GOto, bexprTrue1);
-                bexpr(bexprTrue2, bexprFalse2);
-                break;
-
-            // produzione bexpr ::= || bexpr bexpr
-            case Tag.OR:
-                match(Tag.OR);
-                bexprFalse1 = code.newLabel();
-                bexprTrue1 = bexprTrue;
-                bexprTrue2 = bexprTrue;
-                bexprFalse2 = bexprFalse;
-                bexpr(bexprTrue1, bexprFalse1);
-                code.emit(OpCode.GOto, bexprFalse1);
-                bexpr(bexprTrue2, bexprFalse2);
-                break;
-
-            // produzione bexpr ::= ! bexpr
-            case Tag.NOT:
-                match(Tag.NOT);
-                bexprTrue1 = bexprFalse;
-                bexprFalse1 = bexprTrue;
-                bexpr(bexprTrue1, bexprFalse1);
-                break;
-
             case Tag.RELOP:
                 aus = look;
                 match(Tag.RELOP);
@@ -661,7 +628,7 @@ public class Translator {
     public static void main(String[] args) {
         Lexer lex = new Lexer();
         // String path = "esempio_semplice.lft"; // il percorso del file da leggere
-        String path = "testbool.lft"; // il percorso del file da leggere
+        String path = "Test.lft"; // il percorso del file da leggere
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));

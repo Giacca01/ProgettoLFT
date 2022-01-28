@@ -38,12 +38,12 @@ L1:
  ldc 10
  if_icmplt L3
  goto L5
- goto L5
+L5:
  iload 0
  ldc 20
  if_icmpgt L6
  goto L4
- goto L6
+L6:
  iload 0
  ldc 30
  if_icmpgt L4
