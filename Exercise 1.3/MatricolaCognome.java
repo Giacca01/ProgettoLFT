@@ -81,13 +81,14 @@ public class MatricolaCognome {
         System.out.println("Input: 654321Bianchi ==> " + scan("654321Bianchi"));
         System.out.println("Input: 123456Rossi ==> " + scan("123456Rossi"));
         System.out.println("Input: 654322 ==> " + scan("654322"));
+        System.out.println("Input: 944311Giacardi ==> " + scan("944311Giacardi"));
         System.out.println("Input: Rossi ==> " + scan("Rossi"));
         /*
             Urru is from corso B, so he cannot have an even ID
         */
         System.out.println("Input: 944310Urru ==> " + scan("944310Urru"));
         /*
-         * Urru is from corso C, so he cannot have an odd ID
+         * Fontana is from corso A, so he cannot have an odd ID
          */
         System.out.println("Input: 177697Fontana ==> " + scan("177697Fontana"));
     }

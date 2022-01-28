@@ -31,7 +31,9 @@ letto dal parser.
 3*/
 
 /* Tests that generate error - Uncomment to test */
-//5*/2
+// Va in errore perchè trova il simbolo di moltiplicazione
+// seguito da quello di divisione
+// 5*/2
 
 //200(5+4)
 
@@ -64,3 +66,5 @@ letto dal parser.
 //1+()
 
 ///*
+
+5 + 5

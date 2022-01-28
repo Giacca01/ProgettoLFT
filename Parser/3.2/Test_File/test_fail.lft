@@ -23,7 +23,7 @@ print (x)
 else
 */
 
-/*
+
 if(< x r)
 
 print (x)
@@ -33,7 +33,6 @@ else
 while(< 0 x){assign - x 1 to x}
 
 end;
-*/
 
 // if (= 3 4)
 

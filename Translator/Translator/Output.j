@@ -31,11 +31,8 @@
  .limit stack 1024
  .limit locals 256
  ldc 10
- dup 
  istore 0
- dup 
  istore 1
- pop 
  goto L1
 L1:
  iload 0
@@ -93,9 +90,7 @@ L14:
  iload 2
  ldc 1
  isub 
- dup 
  istore 2
- pop 
  goto L16
 L16:
  iload 2
