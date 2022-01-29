@@ -1,4 +1,4 @@
-package lexer;
+
 public class NumberTok extends Token {
 	/*
 		This class implements the lexeme field of numeric

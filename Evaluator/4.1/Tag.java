@@ -1,4 +1,4 @@
-package lexer;
+
 public class Tag {
 	// List of possible tag values
 	// for the language's tokens

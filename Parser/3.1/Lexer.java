@@ -346,38 +346,4 @@ public class Lexer {
 
         return idState == IdentifiersStates.Q2;
     }
-
-    public static void main(String[] args) {
-        Lexer lex = new Lexer();
-        String path = "Prova.txt"; // il percorso del file da leggere
-
-        // Open an input stream and prints the lexer's output
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(path));
-            Token tok;
-
-            // Initializing the keyword's map
-            keyWords.put("assign", Tag.ASSIGN);
-            keyWords.put("to", Tag.TO);
-            keyWords.put("if", Tag.IF);
-            keyWords.put("else", Tag.ELSE);
-            keyWords.put("while", Tag.WHILE);
-            keyWords.put("begin", Tag.BEGIN);
-            keyWords.put("end", Tag.END);
-            keyWords.put("print", Tag.PRINT);
-            keyWords.put("read", Tag.READ);
-
-            do {
-                tok = lex.lexical_scan(br);
-                if (tok != null)
-                    System.out.println("Scan: " + tok);
-
-            } while (tok != null && tok.tag != Tag.EOF);
-
-            br.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 }

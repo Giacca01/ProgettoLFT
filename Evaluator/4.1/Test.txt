@@ -1,16 +1,20 @@
 /* 	
-	per il momento non possiamo trattare ; e file multi linea
+	per il momento non possiamo trattare ; e quindi espressioni multi linea
  	ma dato che i commenti non sono tokenizzati
 	basta eseguire una riga alla volta commentando
 */
-//5 + 5
-//7 / 2
+/*
+	Una sequenza di questo tipo porta alla produzione dei token <5> <+> <57>
+	chiaramente
+5 + 5
+7 / 2
+*/
 //(12 + 4) - 3
 //((11 - 22) / 4) * 3 		// Expected: -2 * 3
 //6 + 2 * 4
 //(6 + 2) * 4
-//(22 - 15) / 3 * 7			
-//22 - 15 / 3 * 7			// Expected: -13
+//(22 - 15) / 3 * 7			// Dato che usiamo l'associatività a sinistra equivale a ((22 - 15) / 3) * 7
+//22 - 15 / 3 * 7			// Expected: -13, infatti equivale a 22 - ((15 / 3) * 7)
 
 // Espressioni errate
 //(7					// Expected: syntax error

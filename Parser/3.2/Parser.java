@@ -243,6 +243,7 @@ public class Parser
 			 * recognizing the elements in the body of the production.
 			 */
 			case Tag.END:
+				// This procedure's invocation is used mainly as a way to ask the lexer for another token
 				match(Tag.END);
 				break;
 			
@@ -479,6 +480,7 @@ public class Parser
 	
 	public static void main(String[] args) {
 		Lexer lex = new Lexer(); // Initializes the lexer to recognize tokens from file
+
 		String path = args[0]; // il percorso del file da leggere
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); // Open an input stream

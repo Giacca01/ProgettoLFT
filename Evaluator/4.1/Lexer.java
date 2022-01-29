@@ -203,19 +203,19 @@ public class Lexer {
             case '<':
                 readch(br);
 
-                if (peek == '='){
+                if (peek == '=') {
                     peek = ' ';
                     returnValue = Word.le;
-                } else if (peek == '>'){
+                } else if (peek == '>') {
                     peek = ' ';
                     returnValue = Word.ne;
                 } else {
                     /*
-                        We don't want to read another character, because by doing
-                        that we would discard the character that follows <, that wasn't
-                        used to produce the Word.lt token, and can therefore match the patter
-                        of a different token
-                    */
+                     * We don't want to read another character, because by doing
+                     * that we would discard the character that follows <, that wasn't
+                     * used to produce the Word.lt token, and can therefore match the patter
+                     * of a different token
+                     */
                     returnValue = Word.lt;
                 }
 
@@ -228,7 +228,7 @@ public class Lexer {
                  */
                 readch(br);
 
-                if (peek == '='){
+                if (peek == '=') {
                     peek = ' ';
                     returnValue = Word.ge;
                 } else {
@@ -282,7 +282,10 @@ public class Lexer {
                     // da altri numeri
                     if (peek == '0') {
                         readch(br);
-                        /* CORREGGERE */
+                        /*
+                         * CORREGGERE: così non possiamo avere stringhe della forma 0 111, in generale
+                         * non possiamo avere zero seguito da altri numeri
+                         */
                         if (Character.isDigit(peek))
                             System.err.println("Erroneous character" + " after 0 : " + peek);
                         else

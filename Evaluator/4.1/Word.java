@@ -1,4 +1,4 @@
-package lexer;
+
 public class Word extends Token {
 	/*
 		This class implements the lexeme fiels of

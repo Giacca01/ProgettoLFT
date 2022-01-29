@@ -1,4 +1,4 @@
-package lexer;
+
 public class Token {
 	/*
 		This class implements the tag field of the

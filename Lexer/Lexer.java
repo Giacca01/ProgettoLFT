@@ -282,7 +282,7 @@ public class Lexer {
                     // da altri numeri
                     if (peek == '0') {
                         readch(br);
-                        /* CORREGGERE */
+                        /* CORREGGERE: così non possiamo avere stringhe della forma 0 111, in generale non possiamo avere zero seguito da altri numeri */
                         if (Character.isDigit(peek))
                             System.err.println("Erroneous character" + " after 0 : " + peek);
                         else

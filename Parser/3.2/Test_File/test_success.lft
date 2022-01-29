@@ -1,3 +1,5 @@
+print (*(x, 2, 4));
+// Somma e moltiplicazione si possono fare con più di due operandi
 if (> x y) {
 	print(x); 
 	print(x,t,d,d)
