@@ -30,80 +30,44 @@
 .method public static run()V
  .limit stack 1024
  .limit locals 256
- ldc 10
- dup 
+ invokestatic Output/read()I
  istore 0
- dup 
- istore 1
- pop 
  goto L1
 L1:
- iload 0
- invokestatic Output/print(I)V
- iload 1
- invokestatic Output/print(I)V
+ ldc 2
+ istore 1
  goto L2
 L2:
- invokestatic Output/read()I
+ ldc 1
  istore 2
- invokestatic Output/read()I
- istore 3
  goto L3
 L3:
- ldc 1
- invokestatic Output/print(I)V
 L5:
- ldc 2
- ldc 3
- iadd 
- ldc 4
- iadd 
- invokestatic Output/print(I)V
+ iload 1
+ iload 0
+ if_icmple L6
  goto L4
-L4:
-L7:
- ldc 4
- invokestatic Output/print(I)V
- goto L6
 L6:
-L9:
- ldc 2
- invokestatic Output/print(I)V
- goto L8
 L8:
  iload 2
- iload 3
- if_icmpgt L11
- goto L12
-L11:
- iload 2
- invokestatic Output/print(I)V
- goto L10
-L12:
- iload 3
- invokestatic Output/print(I)V
- goto L10
-L10:
-L14:
- iload 2
- ldc 0
- if_icmpgt L15
- goto L13
-L15:
- iload 2
- ldc 1
- isub 
- dup 
+ iload 1
+ imul 
  istore 2
- pop 
- goto L16
-L16:
+ goto L7
+L7:
+L10:
+ iload 1
+ ldc 1
+ iadd 
+ istore 1
+ goto L9
+L9:
+ goto L5
+L4:
  iload 2
  invokestatic Output/print(I)V
- goto L17
-L17:
- goto L14
-L13:
+ goto L11
+L11:
  goto L0
 L0:
  return
