@@ -643,7 +643,7 @@ public class Translator {
 
     public static void main(String[] args) {
         Lexer lex = new Lexer();
-        String path = "Test_File/factorial.lft"; // il percorso del file da leggere
+        String path = args[0]; // il percorso del file da leggere
 
         try {
             BufferedReader br = new BufferedReader(new FileReader(path));
