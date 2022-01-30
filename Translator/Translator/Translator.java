@@ -59,7 +59,7 @@ public class Translator {
          * in a certain programming language consists of a list of statements (<statlist>)
          * followed by the end of file
          */
-        // procedura associata a <prog> -> <statlist>EOF
+        
         int labelNext;
 
         switch (look.tag) {
@@ -69,11 +69,7 @@ public class Translator {
             case Tag.WHILE:
             case Tag.IF:
             case '{':
-                // qui le label sono espresse come offset rispetto
-                // all'indirizzo virtuale 0 di inizio del programma
-                // in sostanza non hanno un nome simbolico
-                // quindi non serve aggiungere alla simbol table
-                // perchè il loro valore è già l'offset
+                // procedura associata a <prog> -> <statlist>EOF
                 labelNext = code.newLabel(); // crea la label
                 // l'idea è quella di indicare al primo blocco di codice
                 // l'etichetta del blocco successivo
@@ -84,8 +80,8 @@ public class Translator {
                  * del terminale che produrrà il blocco a cui essa è riferita
                  */
                 // etichetta che rappresenta l'inizio del blocco di codice (inteso come statements list successivo)
-                code.emitLabel(labelNext); // in teoria servirebbe solo per produrre un unico codice intermedio
-                                            // per più sorgenti (cioè richimando prog in un ciclo)
+                // non è davvero necessaria, ma statlist ha un'attributo next che va valorizzato
+                code.emitLabel(labelNext); 
                 match(Tag.EOF);
                 try {
                     code.toJasmin();
@@ -144,8 +140,8 @@ public class Translator {
         switch (look.tag) {
             case ';':
                 // <statlistp> -> ;<stat><statlistp>
-                labelNext = code.newLabel();
                 match(';');
+                labelNext = code.newLabel();
                 stat(labelNext);
                 // è riferita al blocco di codice rappresentatato da statlistp
                 code.emitLabel(labelNext);
@@ -157,13 +153,11 @@ public class Translator {
                 // <statlistp> -> epsilon
                 // non serve fare match(')')
                 // e lo capiamo dal fatto che il corpo sia epsilon
-                //Non serve perchè a controllare la presenza della tonda
+                // Non serve perchè a controllare la presenza della tonda
                 // saranno le produzioni il cui corpo
                 // include statlistp
                 // saltiamo allo statement successivo
-                code.emit(OpCode.GOto, next); // si può togliere
-                                                // perchè il blocco a cui si salta
-                                                // è quello immediatamente successivo
+                code.emit(OpCode.GOto, next); 
                 break;
 
             default:
@@ -174,12 +168,12 @@ public class Translator {
 
     private void stat(int next) {
         /**
-         * In the lft programming language, a statement can be composed of either
+         * In the P programming language, a statement can be composed of either
          * keywords (see Language.pdf), structured with a certain syntax (see the grammar table)
          * defined by the first five productions.
          * A block of statements can be enclosed in a pair of brackets (e.g. if used as body of while or if)
          */
-        int bexprTrue, statNext, bexprFalse = -1;
+        int bexprTrue, statNext, cond, bexprFalse = -1;
 
         switch (look.tag) {
             case Tag.ASSIGN:
@@ -194,19 +188,20 @@ public class Translator {
                 break;
             
             case Tag.PRINT:
-                // stampa tutti i valori delle espressioni in exprlist
+                // stampa gli n interi non negativi che costituiscono i risultati delle espressioni in exprlist
+                // l'i-esimo intero è il risultato dell'i-esima espressione
                 // <stat> -> print(<exprlist>)
                 match(Tag.PRINT);
                 match('(');
                 // we need to invoke the print methods multiple times
                 // to print multiple values, because JVM
                 // doesn't support list printing natively
+                // the print method's code must be added AFTER each
+                // value of the list: that's why we don't output
+                // it here
                 exprlist(next, 2);
                 match(')');
-                // dobbiamo metterlo qui, perchè la sintassi JVM
-                // prevede di caricare i parametri prima di effettuare 
-                // la chiamata a metodo
-                //code.emit(OpCode.invokestatic, 1);
+                // ??
                 code.emit(OpCode.GOto, next); // si può togliere: punta al blocco successivo
                 break;
             
@@ -218,41 +213,49 @@ public class Translator {
                 // nell'insieme guida consideriamo solo read
                 // e poi verifichiamo che sia seguito da (
                 // nel case associato
-                // l'invocazione a read va messa prima dell'operando
+                // The read method must be invoked BEFORE the operand
+                // that's why we put it here
                 code.emit(OpCode.invokestatic, 0);
                 match('(');
                 // we need to invoke the read methods multiple times
                 // to print multiple values, because JVM
                 // doesn't support list read natively
+                // in order to do so we use the optype attribute
                 idlist(next, 1);
                 match(')');
                 
                 break;
 
             case Tag.WHILE:
-                // <stat> -> while(<bexpr>)<stat>
-                bexprTrue = code.newLabel();
-                
-                statNext = code.newLabel();
-                
+                // <stat> -> while(<bexpr>)<stat> 
                 match(Tag.WHILE);
                 match('(');
-                code.emitLabel(statNext); // non si può togliere: punta ad un blocco non consecutivo
+                // label of the while's condition: we need it
+                // to decide whether or not we want to iterate again
+                cond = code.newLabel();
+                code.emitLabel(cond);
+                bexprTrue = code.newLabel();
                 bexpr(bexprTrue, next);
                 match(')');
-                code.emitLabel(bexprTrue); // in teoria si può togliere
-                stat(statNext);
+                // label that marks the beginning of the while's body
+                code.emitLabel(bexprTrue);
+                stat(cond);
                 break;
 
             case Tag.IF:
                 // <stat> -> if(<bexpr>)<stat><statp>
-                bexprTrue = code.newLabel();
-                bexprFalse = code.newLabel();
                 match(Tag.IF);
                 match('(');
+                /* Azione semantica che calcola bexpr.true e bexpr.false
+                    dato che sono attributi ereditati occorre calcolarli
+                    con un'azione semantica messa prima di bexpr
+                */
+                bexprTrue = code.newLabel();
+                bexprFalse = code.newLabel();
+                /* Fine azione semantica */
                 bexpr(bexprTrue, bexprFalse);
                 match(')');
-                code.emitLabel(bexprTrue); // non si può togliere: punta ad un blocco non consecutivo
+                code.emitLabel(bexprTrue);
                 stat(next);
                 code.emitLabel(bexprFalse);// in teoria si può togliere
                 statp(next);
@@ -284,7 +287,7 @@ public class Translator {
             case Tag.END:
                 // <statp> -> end
                 match(Tag.END);
-                code.emit(OpCode.GOto, next); //punta al blocco successivo
+                code.emit(OpCode.GOto, next);
                 break;
             
             case Tag.ELSE:
@@ -313,10 +316,17 @@ public class Translator {
                 // <idlist> -> ID<idlistp>
                 aus = look;
                 match(Tag.ID);
+                /*
+                    We've found an identifier, so we retrive its address
+                    from the symbol table.
+                    In case it's a new one we add it to the table.
+                    Since we are generating logical addresses, the address
+                    of the new ID will just be the number of identifiers found
+                    up to this point.
+                */
                 id_addr = st.lookupAddress(((Word) aus).lexeme);
                 if (id_addr == -1) {
                     id_addr = count;
-                    // prima usa count e poi lo incremento
                     st.insert(((Word) aus).lexeme, count++);
                 }
                 // we need to do this here because
@@ -324,7 +334,12 @@ public class Translator {
                 // in the order they were written in
                 if (type == 0)
                     code.emit(OpCode.dup);
+                // we don't need to invoke the read method
+                // because, only for the first identifier of the list, we have
+                // outputed it in <stat> -> read(<idlist>)
                 code.emit(OpCode.istore, id_addr);
+                // we need to add dup or read for each identifier of the list
+                // so we need the type attrbiute for idlistp
                 idlistp(next, type);
                 break;
         
@@ -338,7 +353,7 @@ public class Translator {
         /**
          * A list of identifiers is further defined as
          * a sequence of single statements, separated by a comma.
-         * The second production defines the end of a list of identifiers (??)
+         * The second production defines the end of a list of identifiers
          */
         int id_addr = -1;
         Token aus = null;
@@ -354,16 +369,20 @@ public class Translator {
                     id_addr = count;
                     st.insert(((Word) aus).lexeme, count++);
                 }
-                // with this code we emit all the identifiers
-                // of a list that do follow the first one
-                // lo mettiamo prima di idlistp
-                // per evitare che la word in cima allo stack venga consumata
+
                 if (type == 0) {
                     // assign
                     code.emit(OpCode.dup);
                 } else {
+                    // read
                     code.emit(OpCode.invokestatic, 0);
                 }
+
+                /*
+                    istore must be added here to follow
+                    the assign the values in the same order
+                    specified in the ids list 
+                */
                 code.emit(OpCode.istore, id_addr);
                 idlistp(next, type);
                 break;
@@ -377,8 +396,7 @@ public class Translator {
                 // <idlistp> -> epsilon
                 if (type == 0)
                     code.emit(OpCode.pop);
-                code.emit(OpCode.GOto, next); //si può togliere: corrisponde al codice per assign e read che non alterano il 
-                // flusso di esecuzione
+                code.emit(OpCode.GOto, next); 
                 break;
         
             default:
@@ -400,20 +418,16 @@ public class Translator {
         switch (look.tag) {
             case '+':
                 // <expr> ->+(<exprlist>)
-                exprlistNext = code.newLabel();
-            
                 match('+');
                 match('(');
+                exprlistNext = code.newLabel();
                 code.emitLabel(exprlistNext);
-                exprlist(exprlistNext, 0); // lascia sullo stack il risultato della somma
-                                        // tra i risultati delle espressioni in exprlist
+                exprlist(exprlistNext, 0);
+                /*
+                    After this the sum of all the results of the espressions
+                    of exprlist will be loaded onto the operand stack 
+                */
                 match(')');
-                // emettiamo (i.e. scriviamo l'opcode sulla
-                // lista che costituisce il sorgente) solo
-                // dopo aver verificato il corretto utilizzo
-                // del simbolo di somma e SOPRATTUTTO DOPO AVER VALUTATO GLI OPERANDI
-                // (ricordare che JVM usa l'RPN)
-                //code.emit(OpCode.iadd);
                 break;
             
             case '-':
@@ -421,19 +435,16 @@ public class Translator {
                 match('-');
                 expr();
                 expr();
-                // sottrazione tra il risultato delle due espressioni
                 code.emit(OpCode.isub);
                 break;
             
             case '*':
-                // <expr> ->*(<exprlist>)
-                exprlistNext = code.newLabel();
-                
+                // <expr> ->*(<exprlist>)       
                 match('*');
                 match('(');
+                exprlistNext = code.newLabel();
                 code.emitLabel(exprlistNext);
-                exprlist(exprlistNext, 1);// lascia sullo stack il risultato della moltiplicazione
-                                       // tra i risultati delle espressioni in exprlist
+                exprlist(exprlistNext, 1);
                 match(')');
                 //code.emit(OpCode.imul);
                 break;
@@ -443,7 +454,6 @@ public class Translator {
                 match('/');
                 expr();
                 expr();
-                // divisione tra il risultato delle due espressioni
                 code.emit(OpCode.idiv);
                 break;
             
@@ -451,7 +461,7 @@ public class Translator {
                 // <expr> -> NUM
                 // necessary because, in case of corrispondence, match
                 // orders the lexer to produce another token
-                // and we would therefore the needed lexeme
+                // and we would therefore lose the needed lexeme
                 aus = look;
                 match(Tag.NUM);
                 // We don't need to check the object's type
@@ -465,11 +475,9 @@ public class Translator {
                 // <expr> -> ID
                 aus = look;
                 match(Tag.ID);
-                // il simbolo va aggiunto prima o dopo il match???
-                // In teoria dopo, così in caso di errore sintattico
-                // il simbolo "errato" non viene aggiunto
-                // e così non ci occorre un istance of, perchè
-                // siamo sicuri che look sia di tipo word
+                /*
+                    We do it after match to avoid adding "wrong" ids
+                */
                 id_addr = st.lookupAddress(((Word) aus).lexeme);
                 if (id_addr == -1) {
                     id_addr = count;
@@ -484,6 +492,10 @@ public class Translator {
         }
     }
 
+    /*
+        typeOp its necessary to output an iadd, imul
+        or print after evaluating an expression of the list
+    */
     private void exprlist(int next, int typeOp){
         /**
          * A list of arithmetic expression
@@ -500,21 +512,27 @@ public class Translator {
                 // <exprlist> -> <expr><exprlistp>
                 // the assembly for the single expression
                 // is generated by invoking expr
-                // iadd ed imul vanno applicate su due operandi
-                // qui valutiamo il primo
-                expr(); // produce un intero, risultato della valutazione di expr
-                // per stampare il valore di tutte le espressioni di exprlistp
-                // ci occorre una print dopo la valutazione di ogni espressione
-                if (typeOp == 2) 
-                    code.emit(OpCode.invokestatic, 1); // stampa il risultato
-                                                        // dell'espressione i-esima
-                exprlistp(next, typeOp); // produce un intero, risultato della somma o della moltiplicazione
-                                // dei risultati delle espressioni in exprlistp (ipotesi induttiva)
                 /*
-                if (typeOp == 0) // sum
-                    code.emit(OpCode.iadd); // passo induttivo nel caso della somma
-                else if (typeOp == 1) // multiplication
-                    code.emit(OpCode.imul);// passo induttivo nel caso della moltiplicazione*/
+                    The sum and the product of a list of expressions
+                    can only be implemented by adding or multiplying
+                    the results of a couple of expressions.
+                    That's because iadd and imul only accept to operands.
+                    We evaluate the first expression of the list
+                    (so the first operand of imul/iadd) 
+                */
+                expr(); // produce un intero, risultato della valutazione di expr
+                /*
+                    In order to print the result of every expression of the list in
+                    the given order we need to add a print invocation after
+                    evaluating each expression 
+                */
+                if (typeOp == 2){
+                    /*
+                        Prints the result of the i-th expression of the list
+                    */
+                    code.emit(OpCode.invokestatic, 1);
+                }
+                exprlistp(next, typeOp);
                 break;
         
             default:
@@ -528,18 +546,24 @@ public class Translator {
             case ',':
                 // <exprlistp> -> ,<expr><exprlistp>
                 match(',');
-                // we don't need to generate assembly code
-                // for the comma since it just marks the beginning
-                // of a new expression which code will be generated by invoking expr
+                /*
+                    We evaluate the second operand of iadd or imult
+                    (in broader terms, the i-th expression of the list)
+                */
                 expr();
-                // a questo punto siamo sicuri di aver valutato
-                // il secondo operando
+                
+                /* 
+                    We add the code to print the result of a singular
+                    expression or to sum/multiply the results of the evaluation
+                    of a couple of expressions
+                */
                 if (typeOp == 2)
                     code.emit(OpCode.invokestatic, 1);
                 else if (typeOp == 0)
                     code.emit(OpCode.iadd);
                 else
                     code.emit(OpCode.imul);
+
                 exprlistp(next, typeOp);
                 
                 break;
@@ -603,12 +627,12 @@ public class Translator {
                         break;
                         
                     default:
-                        // it will (or at least, should) be executed
                         error("bexpr");
                         break;
                 }
-                // non si può togliere: if e while alterano il flusso
+
                 code.emit(OpCode.GOto, bexprFalse);
+
                 break;
         
             default:

@@ -31,11 +31,8 @@
  .limit stack 1024
  .limit locals 256
  ldc 10
- dup 
  istore 0
- dup 
  istore 1
- pop 
  goto L1
 L1:
  iload 0
@@ -84,25 +81,23 @@ L12:
  invokestatic Output/print(I)V
  goto L10
 L10:
-L14:
+L15:
  iload 2
  ldc 0
- if_icmpgt L15
+ if_icmpgt L14
  goto L13
-L15:
+L14:
  iload 2
  ldc 1
  isub 
- dup 
  istore 2
- pop 
  goto L16
 L16:
  iload 2
  invokestatic Output/print(I)V
  goto L17
 L17:
- goto L14
+ goto L15
 L13:
  goto L0
 L0:
