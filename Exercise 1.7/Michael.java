@@ -1,6 +1,6 @@
 import java.util.HashSet;
 
-public class Automa {
+public class Michael {
     // Automaton's states
     enum States {
         Q0, Q1, Q2, Q3, Q4, Q5,
