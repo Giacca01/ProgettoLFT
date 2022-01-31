@@ -565,6 +565,16 @@ public class Translator {
         }
     }
 
+    /*
+     * Sezione modificata per implementare l'esercizio 5.3
+     * 
+     * Per implementarlo togliamo la generazione del goto da bexpr e poi dobiamo
+     * fare in modo che, quando la condizione che compare nel sorgente è vera, NON
+     * venga effettuato alcun salto, proseguendo semplicemente con l'esecuzione del
+     * codice successivo alla if.
+     * Per ottenere tale effetto traduciamo la condizione della if che compare nel
+     * sorgente con il suo complementare.
+     */
     private void bexpr(int bexprTrue, int bexprFalse) {
         /**
          * A boolean expression is written in prefixed form, with the structure

@@ -76,6 +76,8 @@ public class CommentiMultipli
 		System.out.println("Input: a/**/aa/***/a ==> " + scan("a/**/aa/***/a"));
 		System.out.println("Input: *** ==> " + scan("***"));
 		System.out.println("Input: /**/***/ ==> " + scan("/**/***/"));
+		System.out.println("Input: // ==> " + scan("//"));
+		System.out.println("Input: /*/**/*/ ==> " + scan("/*/**/*/"));
 		
 		
 		System.out.println();

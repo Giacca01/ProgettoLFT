@@ -565,6 +565,9 @@ public class Translator {
         }
     }
 
+    /*
+        Sezione modificata per implementare l'esercizio 5.2 
+    */
     private void bexpr(int bexprTrue, int bexprFalse) {
         /**
          * A boolean expression is written in prefixed form, with the structure

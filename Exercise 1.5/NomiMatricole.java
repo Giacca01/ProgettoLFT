@@ -52,7 +52,7 @@ public class NomiMatricole {
                         stato = States.INVALID;
                     break;
 
-                case Q2: // COgnome corso b
+                case Q2: // Cognome corso b
                     if (pari.contains(symbol))
                         stato = States.Q5;
                     else if (Character.isLetter(symbol) && symbol >= 'a' && symbol <= 'z') {
@@ -63,7 +63,7 @@ public class NomiMatricole {
                         stato = States.INVALID;
                     break;
 
-                case Q3: // Pari-corso A
+                case Q3: // Numero Pari-corso A
                     if (pari.contains(symbol))
                         stato = States.Q3;
                     else if (dispari.contains(symbol))
@@ -72,7 +72,7 @@ public class NomiMatricole {
                         stato = States.INVALID;
                     break;
 
-                case Q4:// Dispari-corso A
+                case Q4:// Numero Dispari-corso A
                     if (pari.contains(symbol))
                         stato = States.Q3;
                     else if (dispari.contains(symbol))
@@ -81,7 +81,7 @@ public class NomiMatricole {
                         stato = States.INVALID;
                     break;
 
-                case Q5:
+                case Q5: // Numero Pari - Corso B
                     if (pari.contains(symbol))
                         stato = States.Q5;
                     else if (dispari.contains(symbol))
@@ -90,7 +90,7 @@ public class NomiMatricole {
                         stato = States.INVALID;
                     break;
                 
-                case Q6:// Dispari-corso B
+                case Q6:// Numero Dispari-corso B
                     if (pari.contains(symbol))
                         stato = States.Q5;
                     else if (dispari.contains(symbol))
@@ -118,6 +118,7 @@ public class NomiMatricole {
         System.out.println("Input: B122 ==> " + scan("B122"));
         System.out.println("Input: Giacardi944310 ==> " + scan("Giacardi944310"));
         System.out.println("Input: Fontana7128458 ==> " + scan("Fontana7128458"));
+        System.out.println("Input: Urru8865424109 ==> " + scan("Urru8865424109"));
 
         // Rejected string
         System.out.println("\n***Stringhe da rifiutare***");
@@ -126,7 +127,9 @@ public class NomiMatricole {
         System.out.println("Input: 654322 ==> " + scan("654322"));
         System.out.println("Input: Rossi ==> " + scan("Rossi"));
         System.out.println("Input: rOssi654321 ==> " + scan("rOssi654321"));
+        // Rifiutata perchè della forma cognome corso A - matricola dispari
         System.out.println("Input: Giacardi944311 ==> " + scan("Giacardi944311"));
+        // Rifiutata perchè della forma cognome corso B - matricola pari
         System.out.println("Input: Urru944310 ==> " + scan("Urru944310"));
     }
 }

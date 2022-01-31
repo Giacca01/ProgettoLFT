@@ -69,7 +69,7 @@ public class NomiMatSpazi {
                         stato = States.INVALID;
                     break;
 
-                case Q3:
+                case Q3: // spazio dopo matricola pari: atteso cognome del corso A
                     if (symbol == ' ')
                         stato = States.Q3;
                     else if (symbol >= 'A' && symbol <= 'K')
@@ -78,7 +78,7 @@ public class NomiMatSpazi {
                         stato = States.INVALID;
                     break;
 
-                case Q4:
+                case Q4: // Blocco del cognome
                     if (symbol == ' ')
                         stato = States.Q5;
                     else if (symbol >= 'a' && symbol <= 'z')
@@ -87,7 +87,7 @@ public class NomiMatSpazi {
                         stato = States.INVALID;
                     break;
 
-                case Q7:
+                case Q7: // spazio dopo matricola dispari: atteso cognome del corso B
                     if (symbol == ' ')
                         stato = States.Q7;
                     else if (symbol >= 'L' && symbol <= 'Z')
@@ -96,7 +96,7 @@ public class NomiMatSpazi {
                         stato = States.INVALID;
                     break;
 
-                case Q5:
+                case Q5: // Cognome dopo lo spazio
                     if (symbol >= 'A' && symbol <= 'Z')
                         stato = States.Q4;
                     else if (symbol == ' ')
@@ -129,6 +129,7 @@ public class NomiMatSpazi {
         System.out.println("Input: 2Bianchi ==> " + scan("2Bianchi"));
         System.out.println("Input:   4 Arancione ==> " + scan("  4 Arancione"));
         System.out.println("Input: 123456De Gasperi ==> " + scan("123456De Gasperi"));
+        System.out.println("Input: 944310 De Angelis Lo Bello ==> " + scan("944310 De Angelis Lo Bello"));
 
         // false
         System.out.println("***Stringhe rifiutate***");
@@ -142,6 +143,10 @@ public class NomiMatSpazi {
          * iniziare con la maiuscola
          */
         System.out.println("Input: 123456De gasperi ==> " + scan("123456De gasperi"));
+        /* 
+            Si suppone che ogni blocco del cognome debba iniziare per maiuscola e poi
+            contenere solo minuscole
+        */
         System.out.println("Input: 654321Michael Super Super URRU ==> " + scan("654321Michael Super Super URRU"));
     }
 }

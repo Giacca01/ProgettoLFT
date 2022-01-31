@@ -203,5 +203,6 @@ public class Main {
         System.out.println("Input: F*ed+erico ==> " + scan("F*ed+erico"));
         System.out.println("Input: MedeKico ==> " + scan("MedeKico"));
         System.out.println("Input: FEDERICO ==> " + scan("FEDERICO"));
+        System.out.println("Input: Fekerjco ==> " + scan("Fekerjco"));
     }
 }

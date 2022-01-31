@@ -145,6 +145,7 @@ public class Main {
         System.out.println("Input: -.7e2 ==> " + scan("-.7e2"));
         System.out.println("Input: 1e2.3 ==> " + scan("1e2.3"));
         System.out.println("Input: -1.5e+2.3 ==> " + scan("1e2.3"));
+        System.out.println("Input: -44.88e.7 ==> " + scan("-44.88e.7"));
 
         // Rejected strings
         System.out.println("\n***Stringhe da rifiutare***");

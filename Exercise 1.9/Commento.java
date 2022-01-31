@@ -84,5 +84,6 @@ public class Commento
 		System.out.println("Input: /*/ ==> " + scan("/*/"));
 		System.out.println("Input: /**/***/ ==> " + scan("/**/***/"));
 		System.out.println("Input: *** ==> " + scan("***"));
+		System.out.println("Input: /*/**/*/ ==> " + scan("/*/**/*/"));
 	}
 }

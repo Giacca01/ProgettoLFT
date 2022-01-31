@@ -1,4 +1,8 @@
 read(x);
+// Ricordare che gli operatori booleani associano a sinistra
+// quindi questa espressione equivale a
+// || (< x 10 && (> x 20 ! > x 30))
+// cioè (x < 10) || (x > 20 && x <= 30)
 if (|| < x 10 && > x 20 ! > x 30) 
     print(+(x,100))
 else
