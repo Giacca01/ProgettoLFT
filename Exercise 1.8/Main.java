@@ -1,9 +1,5 @@
 import java.util.HashSet;
 
-/**
- * MatricolaNome
- */
-
 public class Main {
     enum States {
         Q0, Q1, Q2, Q3, Q4, Q5, 
@@ -15,11 +11,6 @@ public class Main {
         char symbol;
         int lenS = s.length();
         States stato = States.Q0;
-        // Since this automaton has many final states
-        // we use an Hash Set to store them
-        // this solution has a worse memory consumption
-        // than a simple inline or
-        // but allows us to have a cleaner code
         HashSet<States> statiFinali = new HashSet<>(); 
 
         statiFinali.add(States.Q2);

@@ -116,14 +116,11 @@ public class Lexer {
                         readch(br);
                     } while ((peek != (char) -1) && (peek != '\n'));
 
-                    // Predicato: peek == (char)-1 || peek == '\n'
-                    // non serve il reset perchè il primo carattere
-                    // successivo al commento è già contenuto
-                    // in peek e verrà trattato dalla seguente
-                    // invocazione di lexical_scan
-                    // quini niente lettura al ciclo successivo
-                    // (in pratica, date le condizioni di arresto del ciclo, abbiamo già letto il
-                    // carattere spazio che manda a vanti la lettura)
+                    /*
+                        Given the loop's ending condition, when we
+                        arrive here we have already read a character that
+                        triggers the reading of a new character from the input file 
+                    */
                     return lexical_scan(br);
 
                 } else if (peek == '*') {

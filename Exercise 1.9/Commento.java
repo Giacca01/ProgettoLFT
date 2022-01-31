@@ -11,8 +11,6 @@ public class Commento
 				case 0:
 					if(ch == '/')
 						state = 1;
-					else if(ch == '*' || ch == 'a')
-						state = 5;
 					else
 						state = -1;
 					break;
@@ -20,8 +18,6 @@ public class Commento
 				case 1:
 					if(ch == '*')
 						state = 2;
-					else if(ch == '/' || ch == 'a')
-						state = 5;
 					else
 						state = -1;
 					break;
@@ -45,19 +41,9 @@ public class Commento
 					else
 						state = -1;
 					break;
-					
-				case 4:
-					if(ch == '/' || ch == '*' || ch == 'a')
-						state = 5;
-					else
-						state = -1;
-					break;
-					
-				case 5:
-					if(ch == '/' || ch == '*' || ch == 'a')
-						state = 5;
-					else
-						state = -1;
+				
+				default:
+					state = -1;
 					break;
 			}
 		}

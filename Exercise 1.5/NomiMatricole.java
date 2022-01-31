@@ -8,9 +8,10 @@ public class NomiMatricole {
     static boolean scan(String s) {
         int i = 0;
         char symbol;
-        // HashSet is used for a cleaner code
-        // this solution consumes more memory
-        // but offers a constant lookup time (O(1))
+        /*
+            L'hashset ci consente di avere un codice più pulito
+            al prezzo di un maggior consumo di memoria 
+        */
         HashSet<Character> pari = new HashSet<>();
         HashSet<Character> dispari = new HashSet<>();
         int lenS = s.length();

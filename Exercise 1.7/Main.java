@@ -7,10 +7,9 @@ import java.util.HashSet;
 public class Main {
     enum States {
         Q0, Q1, Q2, Q3, Q4, Q5,
-        Q6, Q7, Q8, Q9, Q10, Q11,
+        Q6, Q7, Q9, Q10, Q11,
         Q12, Q13, Q14, Q15, Q16,
-        Q17, Q18, Q19, Q20, Q21,
-        Q22, Q23, INVALID
+        INVALID
     }
 
     static boolean scan(String s) {
@@ -18,11 +17,6 @@ public class Main {
         char symbol;
         int lenS = s.length();
         States stato = States.Q0;
-        HashSet<States> statiFinali = new HashSet<>();
-
-        statiFinali.add(States.Q8);
-        statiFinali.add(States.Q16);
-        statiFinali.add(States.Q23);
 
         while (i < lenS && stato != States.INVALID) {
             symbol = s.charAt(i);
@@ -79,99 +73,54 @@ public class Main {
                     break;
 
                 case Q7:
-                    if (symbol == 'o')
-                        stato = States.Q8;
-                    else
-                        stato = States.Q16;
+                    stato = States.Q16;
                     break;
 
                 case Q9:
                     if (symbol == 'e')
-                        stato = States.Q17;
+                        stato = States.Q10;
                     else
                         stato = States.INVALID;
                     break;
 
                 case Q10:
                     if (symbol == 'd')
-                        stato = States.Q18;
+                        stato = States.Q11;
                     else
                         stato = States.INVALID;
                     break;
 
                 case Q11:
                     if (symbol == 'e')
-                        stato = States.Q19;
+                        stato = States.Q12;
                     else
                         stato = States.INVALID;
                     break;
 
                 case Q12:
                     if (symbol == 'r')
-                        stato = States.Q20;
+                        stato = States.Q13;
                     else
                         stato = States.INVALID;
                     break;
 
                 case Q13:
                     if (symbol == 'i')
-                        stato = States.Q21;
+                        stato = States.Q14;
                     else
                         stato = States.INVALID;
                     break;
 
                 case Q14:
                     if (symbol == 'c')
-                        stato = States.Q22;
+                        stato = States.Q15;
                     else
                         stato = States.INVALID;
                     break;
 
                 case Q15:
                     if (symbol == 'o')
-                        stato = States.Q23;
-                    else
-                        stato = States.INVALID;
-                    break;
-
-                case Q17:
-                    if (symbol == 'd')
-                        stato = States.Q18;
-                    else
-                        stato = States.INVALID;
-                    break;
-
-                case Q18:
-                    if (symbol == 'e')
-                        stato = States.Q19;
-                    else
-                        stato = States.INVALID;
-                    break;
-
-                case Q19:
-                    if (symbol == 'r')
-                        stato = States.Q20;
-                    else
-                        stato = States.INVALID;
-                    break;
-
-                case Q20:
-                    if (symbol == 'i')
-                        stato = States.Q21;
-                    else
-                        stato = States.INVALID;
-                    break;
-
-                case Q21:
-                    if (symbol == 'c')
-                        stato = States.Q22;
-                    else
-                        stato = States.INVALID;
-                    break;
-
-                case Q22:
-                    if (symbol == 'o')
-                        stato = States.Q23;
+                        stato = States.Q16;
                     else
                         stato = States.INVALID;
                     break;
@@ -183,7 +132,7 @@ public class Main {
             i++;
         }
 
-        return statiFinali.contains(stato);
+        return stato == States.Q16;
     }
 
     public static void main(String[] args) {

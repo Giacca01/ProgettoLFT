@@ -1,14 +1,5 @@
 import java.io.*;
-/**
- * CONTROLLARE LA SEGNALAZIONE DEGLI ERRORI
- */
-// importo solo gli elementi del lexer necessari
 import lexer.*;
-
-/*
-    ATTENZIONE!!!
-    Quella usata qui non è l'ultima versione del lexer
-*/
 
 public class Translator {
     private Lexer lex;
@@ -18,20 +9,13 @@ public class Translator {
     CodeGenerator code = new CodeGenerator();
     int count = 0;
 
-    // per ora non possiamo mettere nel file test
-    // commenti o segni di punteggiatura
-    // perchè non fanno parte della 
-    // grammatica di riferimento
     public Translator(Lexer l, BufferedReader br) {
         lex = l;
         pbr = br;
         move();
     }
 
-    // legge il prossimo token della sequenza
-    // di input
     void move() {
-        // look = prossimo simbolo della stringa di input
         look = lex.lexical_scan(pbr);
         System.out.println("token = " + look);
     }
@@ -41,13 +25,8 @@ public class Translator {
     }
 
     void match(int t) {
-        // Ricordare che il simbolo di input è un token
-        // quindi i confronti si fanno in base al tag
-        // perchè ci interessiamo della struttura
-        // non del reale valore
         if (look.tag == t) {
-            // avanziamo se non siamo a fine stringa
-            if (look.tag != Tag.EOF) // Tag.EOF
+            if (look.tag != Tag.EOF)
                 move();
         } else
             error("syntax error");
@@ -69,18 +48,16 @@ public class Translator {
             case Tag.WHILE:
             case Tag.IF:
             case '{':
-                // procedura associata a <prog> -> <statlist>EOF
-                labelNext = code.newLabel(); // crea la label
-                // l'idea è quella di indicare al primo blocco di codice
-                // l'etichetta del blocco successivo
+                // <prog> -> <statlist>EOF
+                labelNext = code.newLabel();
+                /*
+                    We inform the next code block about the following block 
+                */
                 statlist(labelNext);
-                // aggiunge la label al codice intermedio
-                /**
-                 * Ricordare che una label va emessa appena prima delle valutazione
-                 * del terminale che produrrà il blocco a cui essa è riferita
-                 */
-                // etichetta che rappresenta l'inizio del blocco di codice (inteso come statements list successivo)
-                // non è davvero necessaria, ma statlist ha un'attributo next che va valorizzato
+                /*
+                    This label is not really necessary.
+                    By emitting this label we associate it to the next block
+                */
                 code.emitLabel(labelNext); 
                 match(Tag.EOF);
                 try {
@@ -102,7 +79,6 @@ public class Translator {
          * followed by another list of statements. Thus, we define the production
          * <statlist> -> <stat><statlitsp>
          */
-        // procedura associata a <statlist> -> <stat><statlitsp>
         int labelNext;
 
         switch (look.tag) {
@@ -112,12 +88,9 @@ public class Translator {
             case Tag.READ:
             case Tag.WHILE:
             case Tag.IF:
+                // <statlist> -> <stat><statlitsp>
                 labelNext = code.newLabel();
                 stat(labelNext);
-                // ricordare che questa label rappresenta il blocco di codice a cui saltiamo
-                // dopo aver valutato stat, quindi va appesa dopo il codice necessario
-                // per valutare stat
-                // label next è riferita al blocco generato valutando statlistp
                 code.emitLabel(labelNext);
                 statlistp(next);
                 break;
@@ -143,7 +116,11 @@ public class Translator {
                 match(';');
                 labelNext = code.newLabel();
                 stat(labelNext);
-                // è riferita al blocco di codice rappresentatato da statlistp
+                /*
+                 * We emit the newly generated label
+                 * to associate it to the code block generated
+                 * while translating the statlistp variable
+                 */
                 code.emitLabel(labelNext);
                 statlistp(next);
                 break;
@@ -151,12 +128,6 @@ public class Translator {
             case Tag.EOF:
             case '}':
                 // <statlistp> -> epsilon
-                // non serve fare match(')')
-                // e lo capiamo dal fatto che il corpo sia epsilon
-                // Non serve perchè a controllare la presenza della tonda
-                // saranno le produzioni il cui corpo
-                // include statlistp
-                // saltiamo allo statement successivo
                 code.emit(OpCode.GOto, next); 
                 break;
 
@@ -188,8 +159,10 @@ public class Translator {
                 break;
             
             case Tag.PRINT:
-                // stampa gli n interi non negativi che costituiscono i risultati delle espressioni in exprlist
-                // l'i-esimo intero è il risultato dell'i-esima espressione
+                /*
+                 * We print the n integers that are the results of the n expressions of exprlist:
+                 * the i-th integer is the result of the i-th expression
+                 */
                 // <stat> -> print(<exprlist>)
                 match(Tag.PRINT);
                 match('(');
@@ -201,18 +174,12 @@ public class Translator {
                 // it here
                 exprlist(next, 2);
                 match(')');
-                // ??
-                code.emit(OpCode.GOto, next); // si può togliere: punta al blocco successivo
+                code.emit(OpCode.GOto, next);
                 break;
             
             case Tag.READ:
                 // <stat> -> read(<idlist>)
                 match(Tag.READ);
-                // attenzione!!!
-                // read e ( sono terminali DIVERSI
-                // nell'insieme guida consideriamo solo read
-                // e poi verifichiamo che sia seguito da (
-                // nel case associato
                 // The read method must be invoked BEFORE the operand
                 // that's why we put it here
                 code.emit(OpCode.invokestatic, 0);
@@ -246,18 +213,18 @@ public class Translator {
                 // <stat> -> if(<bexpr>)<stat><statp>
                 match(Tag.IF);
                 match('(');
-                /* Azione semantica che calcola bexpr.true e bexpr.false
-                    dato che sono attributi ereditati occorre calcolarli
-                    con un'azione semantica messa prima di bexpr
-                */
+                /*
+                 * bexpr.true and bexpr.false are inherited attributes, so we must
+                 * compute them with a semantic action placed before bexpr
+                 */
                 bexprTrue = code.newLabel();
                 bexprFalse = code.newLabel();
-                /* Fine azione semantica */
+                /* End of the semantic action */
                 bexpr(bexprTrue, bexprFalse);
                 match(')');
                 code.emitLabel(bexprTrue);
                 stat(next);
-                code.emitLabel(bexprFalse);// in teoria si può togliere
+                code.emitLabel(bexprFalse);
                 statp(next);
                 break;  
 
@@ -520,7 +487,7 @@ public class Translator {
                     We evaluate the first expression of the list
                     (so the first operand of imul/iadd) 
                 */
-                expr(); // produce un intero, risultato della valutazione di expr
+                expr(); // It produces an integer, result of the evaluation of the expr expression
                 /*
                     In order to print the result of every expression of the list in
                     the given order we need to add a print invocation after

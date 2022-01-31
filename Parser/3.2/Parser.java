@@ -79,22 +79,15 @@ public class Parser
 				match(Tag.EOF);
 				break;
 				
-			default: // The token read wasn't expected, raise an error
+			default:
 				error("error in grammar (prog) with <" + look.tag + ">");
 		}
 	}
 	
-	/**
-	 * Function that rappresents variable statlist in the grammar. Depending on the
-	 * token recognized from file, applies the corresponding production of the
-	 * grammar. In case the token is unexpected, raises an error.
-	 */
 	private void statlist() {
 		switch(look.tag) {
 			/*
 			 * Production: <statlist> ::= <stat> <statlistp>
-			 * if the token is in the guide set of the production, then continue
-			 * recognizing the elements in the body of the production.
 			 */
 			case Tag.ASSIGN:
 			case Tag.PRINT:
@@ -106,22 +99,15 @@ public class Parser
 				statlistp();
 				break;
 				
-			default: // The token read wasn't expected, raise an error
+			default:
 				error("error in grammar (statlist) with <" + look.tag + ">");
 		}
 	}
 	
-	/**
-	 * Function that rappresents variable statlistp in the grammar. Depending on the
-	 * token recognized from file, applies the corresponding production of the
-	 * grammar. In case the token is unexpected, raises an error.
-	 */
 	private void statlistp() {
 		switch(look.tag) {
 			/*
 			 * Production: <statlistp> ::= ; <stat> <statlistp>
-			 * if the token is in the guide set of the production, then continue
-			 * recognizing the elements in the body of the production.
 			 */
 			case ';':
 				match(';');
@@ -131,29 +117,20 @@ public class Parser
 			
 			/*
 			 * Production: <statlistp> ::= epsilon
-			 * if the token is in the guide set of the production, then continue
-			 * recognizing the elements in the body of the production.
 			 */
 			case Tag.EOF:
 			case '}':
 				break;
 				
-			default: // The token read wasn't expected, raise an error
+			default:
 				error("error in grammar (statlistp) with <" + look.tag + ">");
 		}
 	}
-	
-	/**
-	 * Function that rappresents variable stat in the grammar. Depending on the
-	 * token recognized from file, applies the corresponding production of the
-	 * grammar. In case the token is unexpected, raises an error.
-	 */
+
 	private void stat() {
 		switch(look.tag) {
 			/*
 			 * Production: <stat> ::= assign <expr> to <idlist>
-			 * if the token is in the guide set of the production, then continue
-			 * recognizing the elements in the body of the production.
 			 */
 			case Tag.ASSIGN:
 				match(Tag.ASSIGN);
@@ -164,8 +141,6 @@ public class Parser
 			
 			/*
 			 * Production: <stat> ::= print ( <exprlist> )
-			 * if the token is in the guide set of the production, then continue
-			 * recognizing the elements in the body of the production.
 			 */
 			case Tag.PRINT:
 				match(Tag.PRINT);
@@ -176,8 +151,6 @@ public class Parser
 			
 			/*
 			 * Production: <stat> ::= read ( <idlist> )
-			 * if the token is in the guide set of the production, then continue
-			 * recognizing the elements in the body of the production.
 			 */
 			case Tag.READ:
 				match(Tag.READ);
@@ -188,8 +161,6 @@ public class Parser
 			
 			/*
 			 * Production: <stat> ::= while ( <bexpr> ) <stat>
-			 * if the token is in the guide set of the production, then continue
-			 * recognizing the elements in the body of the production.
 			 */
 			case Tag.WHILE:
 				match(Tag.WHILE);
@@ -201,8 +172,6 @@ public class Parser
 			
 			/*
 			 * Production: <stat> ::= if( <bexpr> ) <stat> <statp>
-			 * if the token is in the guide set of the production, then continue
-			 * recognizing the elements in the body of the production.
 			 */
 			case Tag.IF:
 				match(Tag.IF);
@@ -215,8 +184,6 @@ public class Parser
 			
 			/*
 			 * Production: <stat> ::= { <statlist> }
-			 * if the token is in the guide set of the production, then continue
-			 * recognizing the elements in the body of the production.
 			 */
 			case '{':
 				match('{');
@@ -224,23 +191,15 @@ public class Parser
 				match('}');
 				break;
 				
-			default: // The token read wasn't expected, raise an error
+			default:
 				error("error in grammar (stat) with <" + look.tag + ">");
 		}
 	}
 	
-	/**
-	 * Function that rappresents variable statp in the grammar. Depending on the
-	 * token recognized from file, applies the corresponding production of the
-	 * grammar. In case the token is unexpected, raises an error.
-	 */
 	private void statp() {
 		switch(look.tag) {
-			// produzione statp ::= end
 			/*
 			 * Production: <statp> ::= end
-			 * if the token is in the guide set of the production, then continue
-			 * recognizing the elements in the body of the production.
 			 */
 			case Tag.END:
 				// This procedure's invocation is used mainly as a way to ask the lexer for another token
@@ -249,8 +208,6 @@ public class Parser
 			
 			/*
 			 * Production: <statp> ::= else <stat> end
-			 * if the token is in the guide set of the production, then continue
-			 * recognizing the elements in the body of the production.
 			 */
 			case Tag.ELSE:
 				match(Tag.ELSE);
@@ -258,44 +215,31 @@ public class Parser
 				match(Tag.END);
 				break;
 				
-			default: // The token read wasn't expected, raise an error
+			default:
 				error("error in grammar (statp) with <" + look.tag + ">");
 		}
 	}
 	
-	/**
-	 * Function that rappresents variable idlist in the grammar. Depending on the
-	 * token recognized from file, applies the corresponding production of the
-	 * grammar. In case the token is unexpected, raises an error.
-	 */
+
 	private void idlist() {
 		switch(look.tag) {
 			/*
 			 * Production: <idlist> ::= ID <idlistp>
-			 * if the token is in the guide set of the production, then continue
-			 * recognizing the elements in the body of the production.
 			 */
 			case Tag.ID:
 				match(Tag.ID);
 				idlistp();
 				break;
 				
-			default: // The token read wasn't expected, raise an error
+			default:
 				error("error in grammar (idlist) with <" + look.tag + ">");
 		}
 	}
 	
-	/**
-	 * Function that rappresents variable idlistp in the grammar. Depending on the
-	 * token recognized from file, applies the corresponding production of the
-	 * grammar. In case the token is unexpected, raises an error.
-	 */
 	private void idlistp() {
 		switch(look.tag) {
 			/*
 			 * Production: <idlistp> ::= , ID <idlistp>
-			 * if the token is in the guide set of the production, then continue
-			 * recognizing the elements in the body of the production.
 			 */
 			case ',':
 				match(',');
@@ -305,8 +249,6 @@ public class Parser
 			
 			/*
 			 * Production: <idlistp> ::= epsilon
-			 * if the token is in the guide set of the production, then continue
-			 * recognizing the elements in the body of the production.
 			 */
 			case ';':
 			case Tag.EOF:
@@ -316,22 +258,15 @@ public class Parser
 			case ')':
 				break;
 			
-			default: // The token read wasn't expected, raise an error
+			default:
 				error("error in grammar (idlistp) with <" + look.tag + ">");
 		}
 	}
 	
-	/**
-	 * Function that rappresents variable bexpr in the grammar. Depending on the
-	 * token recognized from file, applies the corresponding production of the
-	 * grammar. In case the token is unexpected, raises an error.
-	 */
 	private void bexpr() {
 		switch(look.tag) {
 			/*
 			 * Production: <bexpr> ::= RELOP <expr> <expr>
-			 * if the token is in the guide set of the production, then continue
-			 * recognizing the elements in the body of the production.
 			 */
 			case Tag.RELOP:
 				match(Tag.RELOP);
@@ -339,22 +274,15 @@ public class Parser
 				expr();
 				break;
 			
-			default: // The token read wasn't expected, raise an error
+			default:
 				error("error in grammar (bexpr) with <" + look.tag + ">");
 		}
 	}
 	
-	/**
-	 * Function that rappresents variable expr in the grammar. Depending on the
-	 * token recognized from file, applies the corresponding production of the
-	 * grammar. In case the token is unexpected, raises an error.
-	 */
 	private void expr() {
 		switch(look.tag) {
 			/*
 			 * Production: <expr> ::= + ( <exprlist> )
-			 * if the token is in the guide set of the production, then continue
-			 * recognizing the elements in the body of the production.
 			 */
 			case '+':
 				match('+');
@@ -365,8 +293,6 @@ public class Parser
 			
 			/*
 			 * Production: <expr> ::= * ( <exprlist> )
-			 * if the token is in the guide set of the production, then continue
-			 * recognizing the elements in the body of the production.
 			 */
 			case '*':
 				match('*');
@@ -377,8 +303,6 @@ public class Parser
 			
 			/*
 			 * Production: <expr> ::= - <expr> <expr>
-			 * if the token is in the guide set of the production, then continue
-			 * recognizing the elements in the body of the production.
 			 */
 			case '-':
 				match('-');
@@ -388,8 +312,6 @@ public class Parser
 			
 			/*
 			 * Production: <expr> ::= / <expr> <expr>
-			 * if the token is in the guide set of the production, then continue
-			 * recognizing the elements in the body of the production.
 			 */
 			case '/':
 				match('/');
@@ -399,8 +321,6 @@ public class Parser
 			
 			/*
 			 * Production: <expr> ::= NUM
-			 * if the token is in the guide set of the production, then continue
-			 * recognizing the elements in the body of the production.
 			 */
 			case Tag.NUM:
 				match(Tag.NUM);
@@ -408,29 +328,20 @@ public class Parser
 			
 			/*
 			 * Production: <expr> ::= ID
-			 * if the token is in the guide set of the production, then continue
-			 * recognizing the elements in the body of the production.
 			 */
 			case Tag.ID:
 				match(Tag.ID);
 				break;
 			
-			default: // The token read wasn't expected, raise an error
+			default:
 				error("error in grammar (expr) with <" + look.tag + ">");
 		}
 	}
 	
-	/**
-	 * Function that rappresents variable exprlist in the grammar. Depending on the
-	 * token recognized from file, applies the corresponding production of the
-	 * grammar. In case the token is unexpected, raises an error.
-	 */
 	private void exprlist() {
 		switch(look.tag) {
 			/*
 			 * Production: <exprlist> ::= <expr> <exprlistp>
-			 * if the token is in the guide set of the production, then continue
-			 * recognizing the elements in the body of the production.
 			 */
 			case '+':
 			case '*':
@@ -442,22 +353,15 @@ public class Parser
 				exprlistp();
 				break;
 			
-			default: // The token read wasn't expected, raise an error
+			default:
 				error("error in grammar (exprlist) with <" + look.tag + ">");
 		}
 	}
 	
-	/**
-	 * Function that rappresents variable exprlistp in the grammar. Depending on the
-	 * token recognized from file, applies the corresponding production of the
-	 * grammar. In case the token is unexpected, raises an error.
-	 */
 	private void exprlistp() {
 		switch(look.tag) {
 			/*
 			 * Production: <exprlistp> ::= , <expr> <exprlistp>
-			 * if the token is in the guide set of the production, then continue
-			 * recognizing the elements in the body of the production.
 			 */
 			case ',':
 				match(',');
@@ -465,15 +369,10 @@ public class Parser
 				exprlistp();
 				break;
 			
-			/*
-			 * Production: <exprlistp> ::= epsilon
-			 * if the token is in the guide set of the production, then continue
-			 * recognizing the elements in the body of the production.
-			 */
 			case ')':
 				break;
 			
-			default: // The token read wasn't expected, raise an error
+			default:
 				error("error in grammar (exprlistp) with <" + look.tag + ">");
 		}
 	}
@@ -481,7 +380,7 @@ public class Parser
 	public static void main(String[] args) {
 		Lexer lex = new Lexer(); // Initializes the lexer to recognize tokens from file
 
-		String path = args[0]; // il percorso del file da leggere
+		String path = args[0];
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path)); // Open an input stream
 			Parser parser = new Parser(lex, br); // Initializes the parser

@@ -80,17 +80,10 @@ public class Parser {
         }
     }
 
-    /**
-     * Function that rappresents variable expr in the grammar. Depending on the
-     * token recognized from file, applies the corresponding production of the
-     * grammar. In case the token is unexpected, raises an error.
-     */
     private void expr() {
         switch (look.tag) {
             /*
              * Production: <expr> ::= <term> <exprp>
-             * if the token is in the guide set of the production, then continue
-             * recognizing the elements in the body of the production.
              */
             case '(':
             case Tag.NUM:
@@ -98,22 +91,15 @@ public class Parser {
                 exprp();
                 break;
 
-            default: // The token read wasn't expected, raise an error
+            default:
                 error("Error in grammar (expr) with <" + look.tag + ">");
         }
     }
 
-    /**
-     * Function that rappresents variable exprp in the grammar. Depending on the
-     * token recognized from file, applies the corresponding production of the
-     * grammar. In case the token is unexpected, raises an error.
-     */
     private void exprp() {
         switch (look.tag) {
             /*
              * Production: <exprp> ::= + <term> <exprp>
-             * if the token is in the guide set of the production, then continue
-             * recognizing the elements in the body of the production.
              */
             case '+':
                 match(Token.plus.tag);
@@ -123,8 +109,6 @@ public class Parser {
 
             /*
              * Production: <exprp> ::= - <term> <exprp>
-             * if the token is in the guide set of the production, then continue
-             * recognizing the elements in the body of the production.
              */
             case '-':
                 match(Token.minus.tag);
@@ -134,29 +118,20 @@ public class Parser {
 
             /*
              * Production: <exprp> ::= epsilon
-             * if the token is in the guide set of the production, then continue
-             * recognizing the elements in the body of the production.
              */
             case Tag.EOF:
             case ')':
                 break;
 
-            default: // The token read wasn't expected, raise an error
+            default:
                 error("Error in grammar (exprp) with <" + look.tag + ">");
         }
     }
 
-    /**
-     * Function that rappresents variable term in the grammar. Depending on the
-     * token recognized from file, applies the corresponding production of the
-     * grammar. In case the token is unexpected, raises an error.
-     */
     private void term() {
         switch (look.tag) {
             /*
              * Production: <term> ::= <fact> <termp>
-             * if the token is in the guide set of the production, then continue
-             * recognizing the elements in the body of the production.
              */
             case '(':
             case Tag.NUM:
@@ -164,22 +139,15 @@ public class Parser {
                 termp();
                 break;
 
-            default: // The token read wasn't expected, raise an error
+            default:
                 error("Error in grammar (term) with <" + look.tag + ">");
         }
     }
 
-    /**
-     * Function that rappresents variable termp in the grammar. Depending on the
-     * token recognized from file, applies the corresponding production of the
-     * grammar. In case the token is unexpected, raises an error.
-     */
     private void termp() {
         switch (look.tag) {
             /*
              * Production: <termp> ::= * <fact> <termp>
-             * if the token is in the guide set of the production, then continue
-             * recognizing the elements in the body of the production.
              */
             case '*':
                 match('*');
@@ -189,8 +157,6 @@ public class Parser {
 
             /*
              * Production: <termp> ::= / <fact> <termp>
-             * if the token is in the guide set of the production, then continue
-             * recognizing the elements in the body of the production.
              */
             case '/':
                 match('/');
@@ -200,8 +166,6 @@ public class Parser {
 
             /*
              * Production: <termp> ::= epsilon
-             * if the token is in the guide set of the production, then continue
-             * recognizing the elements in the body of the production.
              */
             case '+':
             case Tag.EOF:
@@ -209,22 +173,15 @@ public class Parser {
             case '-':
                 break;
 
-            default: // The token read wasn't expected, raise an error
+            default:
                 error("Error in grammar (termp) with <" + look.tag + ">");
         }
     }
 
-    /**
-     * Function that rappresents variable fact in the grammar. Depending on the
-     * token recognized from file, applies the corresponding production of the
-     * grammar. In case the token is unexpected, raises an error.
-     */
     private void fact() {
         switch (look.tag) {
             /*
              * Production: <fact> ::= (<expr>)
-             * if the token is in the guide set of the production, then continue
-             * recognizing the elements in the body of the production.
              */
             case '(':
                 match('(');
@@ -234,14 +191,12 @@ public class Parser {
 
             /*
              * Production: <fact> ::= NUM
-             * if the token is in the guide set of the production, then continue
-             * recognizing the elements in the body of the production.
              */
             case Tag.NUM:
                 match(Tag.NUM);
                 break;
 
-            default: // The token read wasn't expected, raise an error
+            default:
                 error("Error in grammar (fact) with <" + look.tag + ">");
                 break;
         }
@@ -249,7 +204,7 @@ public class Parser {
 
     public static void main(String[] args) {
         Lexer lex = new Lexer(); // Initializes the lexer to recognize tokens from file
-        String path = "Prova.txt"; // il percorso del file da leggere
+        String path = "Prova.txt";
         try {
             BufferedReader br = new BufferedReader(new FileReader(path)); // Open an input stream
             Parser parser = new Parser(lex, br); // Initializes the parser
