@@ -1,4 +1,8 @@
 // ciao a tutti 942#è+!&&|| assign
+/*
+	////###
+*/
+011
 5 */ 2;
 assign 5 to _2 /* Prova assegnamento */
 (300+500);
