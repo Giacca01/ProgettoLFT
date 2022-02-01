@@ -1,0 +1,25 @@
+011
+5 */ 2;
+assign 5 to ab
+(300+500);
+{200 * 400};
+(100 / 0), (223 - 4);
+assign 300 to d;
+print(4 <= 5);
+
+begin;
+	assign Prova to a1b;
+	if (a == Prova){
+		assign ok to a1b;
+	}else{
+		assign no to b123;
+	}
+	
+	while (b <> no)
+		if (4 == 4 && 5 > 4)
+			assign true to ad bcgd;
+end;
+	
+!4==5
+4==5||6==7
+// fine
