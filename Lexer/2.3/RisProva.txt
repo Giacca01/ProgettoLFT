@@ -1,0 +1,22 @@
+(300+500);						// ok
+{200 * 400};						// ok
+(100 / 0), (223 - 4);					// ok
+assign 300 to d;					// ok
+print(4 < 5);						// ok
+
+begin;							// ok
+	assign Prova to a; 				// ok
+	assign empty to b;  				// ok
+	if (a == Prova){				// ok
+		assign ok to b;				// ok
+	}else{						// ok
+		assign no to b;				// ok
+	}						// ok
+	
+	while (b <> no)					// ok
+		if (4 == 4 && 5 > 4)			// ok	
+			assign true to b;		// ok
+end;							// ok
+	
+!4==5							// ok
+4==5||6==7						// ok
