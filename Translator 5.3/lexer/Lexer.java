@@ -46,12 +46,6 @@ public class Lexer {
         }
     }
 
-    /**
-     * Scans the input stream to return the next token
-     * 
-     * @param br: stream whose characters are to be tokenized
-     * @return The next valid token or a null pointer
-     */
     public Token lexical_scan(BufferedReader br) {
         Token returnValue = null;
         String aus = "";
@@ -74,10 +68,6 @@ public class Lexer {
             case '!':
                 // we use ' ' as a way to request
                 // the reading of the next character
-                // we can't invoke readch directly because
-                // we must first return the current symbol's token
-                // (or a null pointer to signal an error)
-                // to the caller
                 peek = ' ';
                 returnValue = Token.not;
                 break;
@@ -119,38 +109,34 @@ public class Lexer {
                         readch(br);
                     } while ((peek != (char) -1) && (peek != '\n'));
 
-                    // Predicato: peek == (char)-1 || peek == '\n'
-                    // non serve il reset perchè il primo carattere
-                    // successivo al commento è già contenuto
-                    // in peek e verrà trattato dalla seguente
-                    // invocazione di lexical_scan
-                    // quini niente lettura al ciclo successivo
-                    // (in pratica, date le condizioni di arresto del ciclo, abbiamo già letto il
-                    // carattere spazio che manda a vanti la lettura)
+                    /*
+                     * Given the loop's ending condition, when we
+                     * arrive here we have already read a character that
+                     * triggers the reading of a new character from the input file
+                     * (or we've reached the end of the file and we don't need to read anything)
+                     */
                     return lexical_scan(br);
 
                 } else if (peek == '*') {
 
                     // multiline comment
-                    // non serve l'1.10 perchè il riconoscimento
-                    // dei token prima e dopo /**/ è fatto da altre
-                    // parti del lexer
                     symbol = ' ';
                     do {
                         symbol = peek;
                         readch(br);
-                        // Invariante: peek == ultimo carattere letto && symbolo == penultimo carattere
-                        // letto
+                        /*
+                         * Here peek hold the last character read
+                         * while symbol holds the penultimate character read
+                         */
                         if (peek == (char) -1) {
                             System.err.println("Unclosed comment detected");
                             return null;
                         }
                     } while (((peek != '/') || (symbol != '*')));
 
-                    // serve una lettura ad inizio ciclo successivo
-                    // perchè l'ultimo carattere letto è il delimitatore
-                    // di commento
-                    // senza viene tokenizzato il simbolo di divisione
+                    /*
+                     * The multiline comment is over. we have to resume tokenization
+                     */
                     peek = ' ';
                     return lexical_scan(br);
                 } else {
@@ -225,10 +211,6 @@ public class Lexer {
                 break;
 
             case '>':
-                /*
-                 * CORREGGERE: in questo modo, se il lessema non è >=, non
-                 * abbiamo consumato un carattere di troppo senza reinserirlo?
-                 */
                 readch(br);
 
                 if (peek == '=') {
@@ -258,8 +240,6 @@ public class Lexer {
                 break;
 
             default:
-                // modificare secondo esercizio 2.2
-                // controllare se tutte le keyword rispettano il pattern degli indetificatori
                 if (Character.isLetter(peek) || peek == '_') { // neither keyword nor identifiers can start with numbers
 
                     aus = Character.toString(peek);
@@ -270,7 +250,6 @@ public class Lexer {
                         readch(br);
                     }
 
-                    // le parole chiave vengono accettate solo se scritte in minuscolo
                     if (keyWords.containsKey(aus)) { // keyword
                         returnValue = new Word(keyWords.get(aus), aus);
                     } else { // identifier
@@ -281,15 +260,9 @@ public class Lexer {
                     }
 
                 } else if (Character.isDigit(peek)) {
-                    // si suppone che 0 non possa essere seguito
-                    // da altri numeri
                     if (peek == '0') {
-                        readch(br);
-                        /* CORREGGERE */
-                        if (Character.isDigit(peek))
-                            System.err.println("Erroneous character" + " after 0 : " + peek);
-                        else
-                            returnValue = new NumberTok(Tag.NUM, 0);
+                        peek = ' ';
+                        returnValue = new NumberTok(Tag.NUM, 0);
                     } else {
                         aus = "";
                         do { // same logic used for words
